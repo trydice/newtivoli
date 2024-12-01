@@ -1,0 +1,59 @@
+[
+    {
+      "I": "Chicken, Broccoli & Alfredo Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Calzone", "chicken"]
+    },
+    {
+      "I": "Chicken Parmesan Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Calzone", "chicken"]
+    },
+    {
+      "I": "Meatlovers Calzones",
+      "P": [{"Qty": 1, "Cost": 10}],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Calzone", "pepperoni", "bacon", "chicken", "sausage"]
+    },
+    {
+      "I": "Sausage & Caramelized Onions Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Calzone", "sausage"]
+    },
+    {
+      "I": "Steak & Cheese Calzones",
+      "P": [{"Qty": 1, "Cost": 10}],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Calzone", "steak"]
+    },
+    {
+      "I": "Spinach, Tomato & Feta Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Calzone", "veggies", "vegetarian"]
+    },
+    {
+      "I": "Veggie Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Calzone", "veggies"]
+    },
+    {
+      "I": "Veggie Calzones",
+      "P": [{"Qty": 1, "Cost": 9}],
+      "T": "Main",
+      "D": "Vegetarian, vegan",
+      "Tags": ["Calzone", "veggies", "vegan"]
+    }
+  ]
+  

@@ -1,0 +1,156 @@
+[
+    {
+      "I": "Cheese Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 19}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "cheese", "popular", "vegetarian"]
+    },
+    {
+      "I": "Cheese Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 19}
+      ],
+      "T": "Main",
+      "D": "Vegetarian, gluten-free",
+      "Tags": ["Pizza", "cheese", "popular", "vegetarian", "gluten-free"]
+    },
+    {
+      "I": "Pepperoni Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 22}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "pepperoni", "popular"]
+    },
+    {
+      "I": "Pepperoni Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 22}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian, gluten-free",
+      "Tags": ["Pizza", "pepperoni", "popular", "gluten-free"]
+    },
+    {
+      "I": "Veggie Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "popular", "vegetarian", "vegetables"]
+    },
+    {
+      "I": "Veggie Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian, vegan, gluten-free",
+      "Tags": ["Pizza", "popular", "vegetarian", "vegetables", "gluten-free", "vegan"]
+    },
+    {
+      "I": "Prosciutto & Arugula Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "prosciutto"]
+    },
+    {
+      "I": "Meatlovers Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "pepperoni", "bacon", "chicken", "sausage"]
+    },
+    {
+      "I": "Margherita Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "vegetarian"]
+    },
+    {
+      "I": "Chicken, Bacon & Ranch Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "chicken", "bacon", "ranch"]
+    },
+    {
+      "I": "BBQ Chicken Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "chicken", "BBQ"]
+    },
+    {
+      "I": "Blue Cheese & Buffalo Chicken Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "chicken", "buffalo"]
+    },
+    {
+      "I": "Chicken, Broccoli & Alfredo Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "chicken", "alfredo"]
+    },
+    {
+      "I": "Mediterranean Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "vegetarian", "mediterranean"]
+    },
+    {
+      "I": "Steak Bomb Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Non-vegetarian",
+      "Tags": ["Pizza", "steak"]
+    },
+    {
+      "I": "Four Cheese Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "vegetarian", "cheese"]
+    },
+    {
+      "I": "Nutella Pizza",
+      "P": [
+        {"Qty": 4, "Cost": 26}
+      ],
+      "T": "Main",
+      "D": "Vegetarian",
+      "Tags": ["Pizza", "vegetarian", "sweet"]
+    }
+  ]
+  
