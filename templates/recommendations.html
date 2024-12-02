@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Recommendations | Tivoli</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/work.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="../static/js/recom.js"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="logo">
+            <img src="../static/assests/Tivoli.jpg" alt="Tivoli Logo" class="logo-img">
+            <span class="logo-text">Tivoli</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="carousel-navigation">
+            <button class="scroll-left" style="border-radius: 10px;">❮</button>
+            <button class="scroll-right" style="border-radius: 10px;">❯</button>
+        </div>
+
+        <form id="recommendations-form" method="post" action="{{ url_for('show_recommendations') }}">
+            <div class="recommendations-container">
+                {% for rec in recommendations %}
+                <div class="recommendation-card" style="width: 500px; background-color: #fff;">
+                    <div class="card-header">
+                        <h2>Menu {{ loop.index }}</h2>
+                        <p style="width: 120px; text-align: right; margin-left: 170px; margin-top:20px; color: black;">
+                            <strong>Prize:</strong> ${{ rec['Total Cost'] }}
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="menu-grid">
+                            {% for course, items in rec['Final Menu'].items() %}
+                            <div class="menu-category">
+                                <h4>{{ course }}</h4>
+                                {% if items %}
+                                <table class="menu-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Total Serving</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>
+                                                {{ item['Item'] }}
+                                                {% if item['Dietary Restrictions'] %}
+                                                (
+                                                    {% set mapping = {
+                                                        "Vegetarian": "Veg",
+                                                        "vegetarian": "Veg",
+                                                        "Non-vegetarian": "Non-veg",
+                                                        "non-vegetarian": "Non-veg",
+                                                        "Dairy-free": "DF",
+                                                        "Gluten-free": "GF",
+                                                        "gluten-free": "GF",
+                                                        "Vegan": "VG",
+                                                        "Nut-free": "NF",
+                                                        "nut-free": "NF",
+                                                        "Sugar-free": "SF",
+                                                        "sugar-free": "SF"
+                                                    } %}
+                                                    {% for restriction in item['Dietary Restrictions'].split(', ') %}
+                                                        {{ mapping.get(restriction.strip(), restriction.strip()) }}{% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                )
+                                                {% endif %}
+                                            </td>
+                                            <td>${{ item['Selected Portion']['Cost'] }}</td>
+                                            <td>{{ item['Quantity'] * item['Selected Portion']['Qty'] }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <p>No items selected for this course.</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="circle-select-container">
+                            <input type="radio" name="selected_rec" value="{{ loop.index0 }}" id="rec-{{ loop.index }}" class="radio-button" required>
+                            <label for="rec-{{ loop.index }}" class="circle-label" onclick="selectCard('{{ loop.index }}')">
+                                <span class="circle-text">&#10003;</span>
+                            </label>
+                        </div>
+                        <div class="card-buttons">
+                            <button type="button" onclick="openEmailModal()" class="checkout-btn">Checkout</button>
+                            <button class="customize-btn">Customize</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+    </main>
+
+    <!-- Modal for Additional Details -->
+    <div id="emailModal" class="modal" style="display: none;">
+        <div class="checkout-container">
+            <div class="checkout-image"></div>
+            <div class="checkout-form">
+                <span class="close" onclick="closeEmailModal()">&times;</span>
+                <h2>Enter Your Details</h2>
+                <form id="emailForm" method="post" action="/checkout">
+                    <input type="hidden" id="modal-rec-index" name="selected_rec">
+                    <label for="user_name">Full Name</label>
+                    <input type="text" id="user_name" name="user_name" placeholder="John Doe" required>
+                    <label for="user_email">Email</label>
+                    <input type="email" id="user_email" name="user_email" placeholder="example@domain.com" required>
+                    <label for="user_address">Delivery Address</label>
+                    <input type="text" id="user_address" name="user_address" placeholder="1234 Main St" required>
+                    <label for="date">Delivery Date</label>
+                    <input type="datetime-local" name="delivery_datetime" placeholder="Delivery Date & Time" required>
+              
+                    <label for="contact_number">Contact Number</label>
+                    <input type="tel" id="contact_number" name="contact_number" placeholder="123-456-7890" required>
+                    <button type="submit">Confirm Checkout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="tivoli-footer">
+        <div class="footer-container">
+            <div class="footer-logo-container">
+                <img src="../static/assests/Tivoli.jpg" alt="Tivoli Logo" class="footer-logo-img">
+                <span class="footer-logo-text">Tivoli</span>
+            </div>
+            <p class="footer-text">© 2024 Tivoli. All rights reserved.</p>
+        </div>
+
+
+        
+<!-- Floating Circular Button Section -->
+<div class="floating-circle">
+    <a href="#menu" class="circle-button">
+        <span> Menu</span>
+    </a>
+    <div class="menu-buttons">
+        <a id="openPdfButton"  href="static/menu.pdf"  class="menu-item">Main</a>
+        <a  id="openPdfButton"  href="static/menu.pdf"  class="menu-item">Sides</a>
+        <a id="openPdfButton"  href="static/menu.pdf" class="menu-item">Appetizers</a>
+        <a id="openPdfButton"  href="static/menu.pdf"class="menu-item">Desserts</a>
+    </div>
+</div>
+    </footer>
+
+    <script>
+        // Set the minimum date to today
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("date").setAttribute("min", today);
+
+        function openEmailModal() {
+            const selectedRec = document.querySelector('input[name="selected_rec"]:checked');
+            if (selectedRec) {
+                document.getElementById('modal-rec-index').value = selectedRec.value;
+                document.getElementById('emailModal').style.display = 'flex';
+            } else {
+                alert("Please select a recommendation before checking out.");
+            }
+        }
+
+        function closeEmailModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+        const container = document.querySelector('.recommendations-container');
+const leftButton = document.querySelector('.scroll-left');
+const rightButton = document.querySelector('.scroll-right');
+
+leftButton.addEventListener('click', () => {
+    container.scrollBy({ left: -container.clientWidth / 2, behavior: 'smooth' });
+});
+
+rightButton.addEventListener('click', () => {
+    container.scrollBy({ left: container.clientWidth / 2, behavior: 'smooth' });
+});
+
+
+        
+    </script>
+</body>
+</html>
