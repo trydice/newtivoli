@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customize Your Menu</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/chat.css">
+    <script src="https://js.stripe.com/v3/"></script> <!-- Stripe.js -->
+    <script src="../static/js/bot.js"></script>
+</head>
+<body>
+    
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <h1 class="gradient-header">How can I help you </h1>
+        <div class="chat-history" id="chat-history">
+            
+            <!-- Render server-side chat history -->
+            {% for message in chat_history %}
+                <div class="chat-bubble {{ 'user' if message.role == 'user' else 'assistant' }}">
+                    <img class="avatar" src="{{ '../static/assests/human.jpg' if message.role == 'user' else '../static/assests/bot.png' }}" alt="{{ message.role }}">
+                    <p><strong>{{ 'You' if message.role == 'user' else 'Assistant' }}:</strong> {{ message.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Chat input form -->
+        <form class="chat-input-container" onsubmit="return false;">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message here..." required>
+            <button type="submit" class="chat-submit">Send</button>
+        </form>
+    </div>
+
+     <!-- Menu Section -->
+     <div class="menu-container">
+        <h2 class="gradient-header">Current Menu</h2>
+        <div class="menu">
+            {% for course_type, items in selected_rec['Final Menu'].items() %}
+                <h3>{{ course_type }}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Qty</th>
+                            <th>Item</th>
+                            <th>item/cost</th>
+                            
+                            <th>Feeds</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr data-item-id="{{ item['Item'] }}">
+                                <td class="quantity-cell">
+                                    <button class="quantity-btn decrease">-</button>
+                                    <span class="item-quantity">{{ item['Quantity'] }}</span>
+                                    <button class="quantity-btn increase">+</button>
+                                </td>
+                                <td>
+                                    {{ item['Item'] }}
+                                    {% if item['Dietary Restrictions'] %}
+                                        ({{ item['Dietary Restrictions'] }})
+                                    {% endif %}
+                                </td>
+                                <td>{{ item['Selected Portion']['Cost'] }}</td>
+                              
+                                <td>{{ item['Total_Servings'] }}</td>
+                                <td>${{ "%.2f"|format(item['Total_Cost']) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+      
+                {% endfor %}
+             
+            </div>
+               
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="openEmailModal()" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer;">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Checkout Modal -->
+    <div id="emailModal" class="modal" style="display: none;"  >
+        <div class="checkout-container" style="margin-left: 330px; margin-top: 90px;">
+            <!-- Checkout Image Section -->
+            <div class="checkout-image"></div>
+            
+            <!-- Checkout Form Section -->
+            <div class="checkout-form">
+                <span class="close" onclick="closeEmailModal()">&times;</span>
+                <h2>Enter Your Details</h2>
+                <form id="emailForm">
+                    <label for="user_name">Full Name</label>
+                    <input type="text" id="user_name" name="user_name" placeholder="Your Full Name" required>
+    
+                    <label for="user_email">Email</label>
+                    <input type="email" id="user_email" name="user_email" placeholder="Your Email" required>
+    
+                    <label for="user_address">Delivery Address</label>
+                    <input type="text" id="user_address" name="user_address" placeholder="Delivery Address" required>
+    
+                    <label for="delivery_datetime">Delivery Date & Time</label>
+                    <input type="datetime-local" id="delivery_datetime" name="delivery_datetime" required>
+                    <p id="datetime-error" style="color: red; display: none;">Delivery date and time must be at least 24 hours in the future.</p>
+                    
+                    
+                    <label for="contact_number">Contact Number</label>
+                    <input type="text" id="contact_number" name="contact_number" placeholder="Contact Number" required>
+    
+                    <input type="hidden" name="selected_rec_index" value="{{ recommendation_index }}">
+    
+                    <button type="submit">Confirm Checkout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    const deliveryDateInput = document.getElementById("delivery_datetime");
+    const errorMessage = document.getElementById("datetime-error");
+
+    // Function to set the minimum delivery date and time
+    function setMinDeliveryDateTime() {
+        const now = new Date();
+        const futureDate = new Date(now.getTime() + 24 * 60 * 60 * 1000); // Add 24 hours
+        const year = futureDate.getFullYear();
+        const month = String(futureDate.getMonth() + 1).padStart(2, "0");
+        const date = String(futureDate.getDate()).padStart(2, "0");
+        const hours = String(futureDate.getHours()).padStart(2, "0");
+        const minutes = String(futureDate.getMinutes()).padStart(2, "0");
+
+        const minDateTime = `${year}-${month}-${date}T${hours}:${minutes}`;
+        deliveryDateInput.min = minDateTime; // Set minimum date and time
+        deliveryDateInput.value = minDateTime; // Set initial value to the minimum
+    }
+
+    // Function to validate the selected date and time
+    deliveryDateInput.addEventListener("input", () => {
+        const selectedDate = new Date(deliveryDateInput.value);
+        const now = new Date();
+        const minDate = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+
+        if (selectedDate < minDate) {
+            errorMessage.style.display = "block";
+            deliveryDateInput.value = ""; // Clear invalid input
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+
+    setMinDeliveryDateTime(); // Initialize on page load
+});
+
+        const stripe = Stripe('pk_test_Ujwxvk3zBxt8yokfEFa8wSnX'); // Replace with your actual public key
+
+        // Open and Close Checkout Modal Functions
+        function openEmailModal() {
+            document.getElementById("emailModal").style.display = "block";
+        }
+
+        function closeEmailModal() {
+            document.getElementById("emailModal").style.display = "none";
+        }
+
+        // Handle Form Submission and Redirect to Stripe
+        document.getElementById("emailForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById("emailForm"));
+            const data = {
+                user_name: formData.get("user_name"),
+                user_email: formData.get("user_email"),
+                user_address: formData.get("user_address"),
+                delivery_datetime: formData.get("delivery_datetime"),
+                contact_number: formData.get("contact_number"),
+                selected_rec_index: formData.get("selected_rec_index")
+            };
+
+            fetch("/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(session => {
+                if (session && session.id) {
+                    stripe.redirectToCheckout({ sessionId: session.id });
+                } else {
+                    alert("Failed to initiate Stripe Checkout: No session ID.");
+                }
+            })
+            .catch(error => {
+                console.error("Error initiating Stripe checkout:", error);
+                alert("Error initiating Stripe checkout.");
+            });
+        });
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById("emailModal");
+            if (event.target == modal) {
+                closeEmailModal();
+            }
+        };
+
+        
+        
+    </script>
+</body>
+</html>
