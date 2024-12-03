@@ -386,7 +386,7 @@ def generate_recommendation(event_details, budget_multiplier, main_menu_data):
     total_budget = event_details['budget'] * budget_multiplier
     remaining_budget = total_budget
 
-    if total_budget / event_details['headcount'] < 15:
+    if total_budget / event_details['headcount'] < 0:
         logging.warning("Insufficient budget per person.")
         return None  # Insufficient budget
 
@@ -494,7 +494,7 @@ def index():
         # Generate recommendations
         global recommendations
         recommendations = []
-        budget_multipliers = [0.9,1,1.1]
+        budget_multipliers = [1,1.05,1.1]
         
         for i, file in enumerate(selected_files):
             main_menu_data = load_menu(file)  # Load main course data from the selected file
@@ -950,7 +950,9 @@ def interpret_user_query(user_input):
     """Uses LLM to interpret user's intent and determine action."""
     logging.debug("Interpreting user query.")
     prompt = f"""
-    You are an assistant that interprets user commands and outputs a JSON object specifying the action to take.
+    You are an assistant and also junior chef that interprets user commands and outputs a JSON object specifying the action to take.
+    - if user says can we add dessert or appetizer or side ? it means that this is question but if it says cnan we add item_name than it is 'ADD' action.
+    - and user ask for some item to add but it is not there than add nearest item but never say item not found 
 
     Possible actions:
     - select_recommendation (user wants to select one of the recommendations)
@@ -1155,4 +1157,4 @@ def recalculate_totals(selected_rec):
 
 if __name__ == '__main__':
     logging.info("Starting the Flask app.")
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=5000,debug=True)
